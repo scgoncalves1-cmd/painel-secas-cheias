@@ -139,7 +139,7 @@
   .legenda span{ display:inline-flex; align-items:center; gap:6px; }
   .legenda i{ width:10px; height:10px; border-radius:50%; display:inline-block; }
 
-  /* ---- filtro global: ANO | MÊS | CIDADE ---- */
+  /* ---- filtro global: ANO | MÊS | CIDADE | REGIÃO ---- */
   .filtro-global{ display:flex; gap:2px; margin-bottom:22px; position:relative; }
   .filtro-segmento{ position:relative; flex:1; }
   .filtro-segmento-grande{ flex:2; }
@@ -174,6 +174,15 @@
   .card-mini .nivel{ font-size:.72rem; font-weight:700; margin-top:6px; }
 
   .sem-dados{ font-size:.85rem; color:var(--texto-suave); font-style:italic; padding:10px 0; }
+
+  /* ---- alternador de agrupamento dos gráficos de chuva: CIDADE | REGIÃO ---- */
+  .modo-toggle{ display:flex; gap:10px; margin-bottom:14px; }
+  .modo-btn{
+    background:var(--marrom-medio); color:#fff; border:none; border-radius:8px;
+    padding:10px 26px; font-size:.8rem; font-weight:800; letter-spacing:.5px;
+    text-transform:uppercase; cursor:pointer; opacity:.55;
+  }
+  .modo-btn.ativo{ opacity:1; background:var(--marrom-escuro); }
 
   .graficos{ display:grid; grid-template-columns:1fr 1fr; gap:22px; }
   @media (max-width:820px){ .graficos{ grid-template-columns:1fr; } }
@@ -296,6 +305,10 @@
       <button type="button" class="filtro-btn" onclick="toggleFiltro('cidade')">Cidade</button>
       <div class="filtro-painel" id="painel-cidade"></div>
     </div>
+    <div class="filtro-segmento filtro-segmento-grande" id="seg-regiao">
+      <button type="button" class="filtro-btn" onclick="toggleFiltro('regiao')">Região</button>
+      <div class="filtro-painel" id="painel-regiao"></div>
+    </div>
   </div>
 
   <div id="bullet-cidade"></div>
@@ -305,8 +318,18 @@
       <h3>📉 Seca por categoria (% da área do estado, mês a mês)</h3>
       <canvas id="grafico-seca"></canvas>
     </div>
+  </div>
+
+  <div style="height:22px"></div>
+
+  <div class="modo-toggle">
+    <button type="button" class="modo-btn" id="btn-modo-cidade" onclick="definirModoChuva('cidade')">Cidade</button>
+    <button type="button" class="modo-btn" id="btn-modo-regiao" onclick="definirModoChuva('regiao')">Região</button>
+  </div>
+
+  <div class="graficos">
     <div class="grafico-card">
-      <h3>🌧️ Chuva acumulada por cidade (CEMADEN)</h3>
+      <h3 id="titulo-grafico-cidades">🌧️ Chuva acumulada por cidade (CEMADEN)</h3>
       <canvas id="grafico-chuva-cidades"></canvas>
     </div>
     <div class="grafico-card">
@@ -375,7 +398,9 @@ let graficoSeca, graficoChuvaCidades, graficoChuvaSerie;
 let anosFiltro = { todos: true, selecionados: new Set() };
 let mesesFiltro = { todos: true, selecionados: new Set() };
 let cidadeFiltro = { todos: true, cidade: null };
-let painelFiltroAberto = null; // 'ano' | 'mes' | 'cidade' | null
+let regiaoFiltro = { todos: true, regiao: null };
+let painelFiltroAberto = null; // 'ano' | 'mes' | 'cidade' | 'regiao' | null
+let modoAgrupamentoChuva = "cidade"; // 'cidade' | 'regiao'
 
 const NOMES_MESES = ["01","02","03","04","05","06","07","08","09","10","11","12"];
 const LABELS_MESES = { "01":"Janeiro","02":"Fevereiro","03":"Março","04":"Abril","05":"Maio","06":"Junho",
@@ -423,7 +448,9 @@ function abrirPainel(uf) {
   anosFiltro = { todos: true, selecionados: new Set() };
   mesesFiltro = { todos: true, selecionados: new Set() };
   cidadeFiltro = { todos: true, cidade: null };
+  regiaoFiltro = { todos: true, regiao: null };
   painelFiltroAberto = null;
+  modoAgrupamentoChuva = "cidade";
   document.getElementById("view-capa").style.display = "none";
   document.getElementById("view-painel").classList.add("ativo");
   document.getElementById("btn-nav-capa").classList.remove("ativo");
@@ -471,7 +498,9 @@ function renderizarPainel() {
   renderizarPainelAno();
   renderizarPainelMes();
   renderizarPainelCidade();
+  renderizarPainelRegiao();
   renderizarBulletCidade();
+  atualizarBotoesModo();
   renderizarGraficoSeca();
   renderizarGraficosChuva();
 
@@ -508,12 +537,20 @@ function atualizarPaineisFiltro() {
   document.getElementById("painel-ano").classList.toggle("aberto", painelFiltroAberto === "ano");
   document.getElementById("painel-mes").classList.toggle("aberto", painelFiltroAberto === "mes");
   document.getElementById("painel-cidade").classList.toggle("aberto", painelFiltroAberto === "cidade");
+  document.getElementById("painel-regiao").classList.toggle("aberto", painelFiltroAberto === "regiao");
 }
 
 /* ---------- listas disponíveis pros filtros ---------- */
 function cidadesDisponiveis() {
   return alertas.filter(a => a.tipo === "Cheia" && a.uf === ufAtual)
     .map(a => a.local).sort((a, b) => a.localeCompare(b));
+}
+function regioesDisponiveis() {
+  const set = new Set();
+  alertas.filter(a => a.tipo === "Cheia" && a.uf === ufAtual).forEach(a => {
+    if (a.regiao) set.add(a.regiao);
+  });
+  return Array.from(set).sort((a, b) => a.localeCompare(b));
 }
 function anosDisponiveis() {
   const set = new Set();
@@ -591,10 +628,42 @@ function selecionarCidadeFiltro(cidade) {
   renderizarPainelCidade(); atualizarGraficos();
 }
 
+/* ---------- painel REGIÃO (seleção única + Todos) ---------- */
+function renderizarPainelRegiao() {
+  const regioes = regioesDisponiveis();
+  const painel = document.getElementById("painel-regiao");
+  let html = '<div class="filtro-item todos" onclick="marcarRegiaoTodos()">' +
+    (regiaoFiltro.todos ? "●" : "○") + ' Todos</div>';
+  html += regioes.map(r => '<div class="filtro-item" onclick="selecionarRegiaoFiltro(\'' + r.replace(/'/g, "\\'") + '\')">' +
+    ((!regiaoFiltro.todos && regiaoFiltro.regiao === r) ? "●" : "○") + ' ' + r + '</div>').join("");
+  painel.innerHTML = html || '<div class="filtro-item">Sem regiões ainda — preencha as abas "regiões RS"/"regiões SP" na planilha.</div>';
+}
+function marcarRegiaoTodos() {
+  regiaoFiltro.todos = true; regiaoFiltro.regiao = null;
+  renderizarPainelRegiao(); atualizarGraficos();
+}
+function selecionarRegiaoFiltro(regiao) {
+  regiaoFiltro.todos = false; regiaoFiltro.regiao = regiao;
+  renderizarPainelRegiao(); atualizarGraficos();
+}
+
 function atualizarGraficos() {
   renderizarBulletCidade();
   renderizarGraficoSeca();
   renderizarGraficosChuva();
+}
+
+/* ---------- alternador Cidade / Região dos gráficos de chuva ---------- */
+function definirModoChuva(modo) {
+  modoAgrupamentoChuva = modo;
+  atualizarBotoesModo();
+  renderizarGraficosChuva();
+}
+function atualizarBotoesModo() {
+  document.getElementById("btn-modo-cidade").classList.toggle("ativo", modoAgrupamentoChuva === "cidade");
+  document.getElementById("btn-modo-regiao").classList.toggle("ativo", modoAgrupamentoChuva === "regiao");
+  document.getElementById("titulo-grafico-cidades").textContent =
+    modoAgrupamentoChuva === "regiao" ? "🌧️ Chuva acumulada por região (CEMADEN)" : "🌧️ Chuva acumulada por cidade (CEMADEN)";
 }
 
 /* ---------- bullet da cidade escolhida no filtro ---------- */
@@ -662,34 +731,40 @@ function renderizarGraficoSeca() {
   });
 }
 
-/* ---------- gráficos de chuva (bar por cidade, gradiente de azul + linha diária), respeitando filtros ---------- */
+/* ---------- gráficos de chuva: agrupa por cidade OU por região, conforme o alternador ---------- */
 function renderizarGraficosChuva() {
-  const totalPorCidade = {};
-  const seriePorCidade = {};
-
+  const registros = [];
   dadosClimaticos.forEach(r => {
     if (r.fonte !== "CEMADEN" || r.variavel !== "precipitacao_mm") return;
     if (!passaFiltroData(r.data)) return;
 
     const info = alertas.find(a => a.tipo === "Cheia" && a.local === r.estacao_codigo);
-    const uf = info ? info.uf : null;
-    if (uf !== ufAtual) return;
+    if (!info || info.uf !== ufAtual) return;
+    if (!cidadeFiltro.todos && r.estacao_codigo !== cidadeFiltro.cidade) return;
+    if (!regiaoFiltro.todos && (info.regiao || "") !== regiaoFiltro.regiao) return;
 
-    const cidade = r.estacao_codigo;
-    if (!cidadeFiltro.todos && cidade !== cidadeFiltro.cidade) return;
-
-    const valor = parseFloat(r.valor) || 0;
-    const dia = String(r.data).slice(0, 10);
-
-    totalPorCidade[cidade] = (totalPorCidade[cidade] || 0) + valor;
-    if (!seriePorCidade[cidade]) seriePorCidade[cidade] = {};
-    seriePorCidade[cidade][dia] = (seriePorCidade[cidade][dia] || 0) + valor;
+    registros.push({
+      cidade: r.estacao_codigo,
+      regiao: info.regiao || "Sem região",
+      valor: parseFloat(r.valor) || 0,
+      dia: String(r.data).slice(0, 10),
+    });
   });
 
-  let cidades = Object.keys(totalPorCidade);
-  cidades.sort((a, b) => totalPorCidade[b] - totalPorCidade[a]);
-  const top = cidadeFiltro.todos ? cidades.slice(0, 12) : cidades;
-  const valoresTop = top.map(c => totalPorCidade[c]);
+  const chaveGrupo = modoAgrupamentoChuva === "regiao" ? "regiao" : "cidade";
+  const totalPorGrupo = {};
+  const seriePorGrupo = {};
+  registros.forEach(reg => {
+    const g = reg[chaveGrupo];
+    totalPorGrupo[g] = (totalPorGrupo[g] || 0) + reg.valor;
+    if (!seriePorGrupo[g]) seriePorGrupo[g] = {};
+    seriePorGrupo[g][reg.dia] = (seriePorGrupo[g][reg.dia] || 0) + reg.valor;
+  });
+
+  let grupos = Object.keys(totalPorGrupo);
+  grupos.sort((a, b) => totalPorGrupo[b] - totalPorGrupo[a]);
+  const top = grupos.slice(0, 12);
+  const valoresTop = top.map(g => totalPorGrupo[g]);
   const minV = valoresTop.length ? Math.min(...valoresTop) : 0;
   const maxV = valoresTop.length ? Math.max(...valoresTop) : 0;
 
@@ -700,22 +775,29 @@ function renderizarGraficosChuva() {
       labels: top,
       datasets: [{
         label: "Chuva acumulada (mm)",
-        data: top.map(c => Math.round(totalPorCidade[c] * 10) / 10),
-        backgroundColor: top.map(c => corGradienteAzul(totalPorCidade[c], minV, maxV)),
+        data: top.map(g => Math.round(totalPorGrupo[g] * 10) / 10),
+        backgroundColor: top.map(g => corGradienteAzul(totalPorGrupo[g], minV, maxV)),
       }],
     },
     options: {
       responsive: true, indexAxis: "y",
       plugins: { legend: { display: false } },
-      onClick: (evt, els) => { if (els.length) selecionarCidadeFiltro(top[els[0].index]); },
+      onClick: (evt, els) => {
+        if (!els.length) return;
+        if (modoAgrupamentoChuva === "regiao") selecionarRegiaoFiltro(top[els[0].index]);
+        else selecionarCidadeFiltro(top[els[0].index]);
+      },
     },
   });
 
-  const cidadeAlvo = !cidadeFiltro.todos ? cidadeFiltro.cidade : top[0];
-  document.getElementById("titulo-grafico-serie").textContent =
-    "📈 Chuva diária — " + (cidadeAlvo || "sem dados");
+  const grupoAlvo = modoAgrupamentoChuva === "regiao"
+    ? (!regiaoFiltro.todos ? regiaoFiltro.regiao : top[0])
+    : (!cidadeFiltro.todos ? cidadeFiltro.cidade : top[0]);
 
-  const serie = cidadeAlvo ? seriePorCidade[cidadeAlvo] || {} : {};
+  document.getElementById("titulo-grafico-serie").textContent =
+    "📈 Chuva diária — " + (grupoAlvo || "sem dados");
+
+  const serie = grupoAlvo ? seriePorGrupo[grupoAlvo] || {} : {};
   const dias = Object.keys(serie).sort();
 
   if (graficoChuvaSerie) graficoChuvaSerie.destroy();
