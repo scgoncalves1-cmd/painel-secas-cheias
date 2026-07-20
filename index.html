@@ -82,10 +82,13 @@
     font-size:.78rem; color:#cfd0c2; border-top:1px solid rgba(255,255,255,.18);
     padding-top:16px; margin-top:8px;
   }
-  .logo-projeto-footer{
-    height:48px; width:auto;
-    filter:drop-shadow(0 2px 6px rgba(0,0,0,.3));
-    opacity:.9;
+  .footer-logo{
+    text-align:center; padding:32px 24px 40px;
+    border-top:1px solid #e7e1d2; background:var(--bg-claro);
+  }
+  .footer-logo img{
+    height:72px; width:auto;
+    opacity:.85;
   }
   /* ===== Áreas de estudo ===== */
   .secao-areas{ padding:48px 24px 64px; max-width:1100px; margin:0 auto; }
@@ -230,9 +233,6 @@
       <img src="ods3.png" alt="ODS 3 - Saúde e Bem-Estar">
     </div>
     <div class="rodape-academico">
-      <!-- Substitua pela URL da sua imagem no GitHub, ex:
-           https://raw.githubusercontent.com/seu-usuario/seu-repo/main/logo.png -->
-      <img src="logo-projeto.png" alt="Logo do projeto" class="logo-projeto-footer">
       <span>🎓 PPGCidades · UCS</span>
       <span>👤 Stéfani Capriolli Gonçalves</span>
     </div>
@@ -365,6 +365,13 @@
     </div>
   </div>
 </div>
+<!-- ===== RODAPÉ COM LOGO ===== -->
+<footer class="footer-logo">
+  <!-- Substitua pelo link raw do seu arquivo no GitHub:
+       https://raw.githubusercontent.com/seu-usuario/seu-repo/main/logo.png -->
+  <img src="logo-projeto.png" alt="Logo do projeto Entre Secas e Cheias">
+</footer>
+
 <script>
 const ID_PLANILHA = "1HPImo850i_Bzcy0O-hK1_-SPJq6pAv65fEHpD6qr22k";
 function urlCsv(nomeAba) {
