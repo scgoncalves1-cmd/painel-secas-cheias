@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Entre a Seca e a Cheia — Painel de Monitoramento RS/SP</title>
+<title>Entre Secas e Cheias — Painel de Monitoramento Rio Grande do Sul /São Paulo</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
   :root{
@@ -26,8 +26,8 @@
     --nivel-perigo:#f1c232;
     --nivel-grande-perigo:#e69138;
     --nivel-muito-grave:#c0392b;
-    --seca-sem:#8a9a86;
-    --seca-s0:#f1c232;
+    --seca-sem:#192954;
+    --seca-s0:#b67120;
     --seca-s1:#e69138;
     --seca-s2:#d9711f;
     --seca-s3:#c0392b;
@@ -143,9 +143,7 @@
     margin-bottom:18px; display:flex; align-items:center; justify-content:space-between;
     flex-wrap:wrap; gap:14px;
   }
-  .banner-chuva .rotulo{
-    font-size:1.05rem; font-weight:800; text-transform:uppercase; letter-spacing:.5px; margin-bottom:10px;
-  }
+  .banner-chuva .rotulo{ font-size:.78rem; text-transform:uppercase; letter-spacing:1px; font-weight:800; }
   .banner-chuva .valor-linha{ display:flex; align-items:center; gap:10px; }
   .banner-chuva .valor-linha i{ width:20px; height:20px; border-radius:50%; display:inline-block; flex:none; }
   .banner-chuva .valor-linha span{ font-size:.95rem; font-weight:800; text-transform:uppercase; letter-spacing:.3px; }
