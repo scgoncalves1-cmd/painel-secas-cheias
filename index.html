@@ -56,8 +56,9 @@ a{color:inherit;text-decoration:none;}
 .ods-item{display:flex;flex-direction:column;align-items:center;max-width:200px;}
 .ods-item img{height:96px;width:96px;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,.12);cursor:pointer;transition:transform .15s,box-shadow .15s;}
 .ods-item img:hover{transform:translateY(-3px);box-shadow:0 8px 18px rgba(0,0,0,.18);}
-.ods-aba{display:none;margin-top:10px;background:#fff;border-radius:10px;padding:12px 16px;font-size:.78rem;color:var(--texto-escuro);line-height:1.55;box-shadow:0 4px 14px rgba(0,0,0,.1);text-align:left;border-top:3px solid var(--laranja);}
+.ods-aba{display:none;margin-top:10px;background:#fff;border-radius:10px;padding:12px 16px;font-size:.78rem;color:#2c2a25;line-height:1.55;box-shadow:0 4px 14px rgba(0,0,0,.1);text-align:left;border-top:3px solid var(--laranja);border:1px solid rgba(0,0,0,.1);border-top:3px solid var(--laranja);}
 .ods-aba.aberta{display:block;}
+body.dark .ods-aba{background:#1c2130;color:#dde1ea;border-color:#2a3040;}
 .rodape-academico{display:flex;justify-content:center;align-items:center;gap:22px;flex-wrap:wrap;font-size:.78rem;color:var(--texto-suave);border-top:1px solid var(--border-color);padding-top:16px;margin-top:8px;}
 
 /* CAPA */
@@ -715,15 +716,16 @@ function renderizarCorrelacao(){
   dadosClimaticos.forEach(r=>{if(r.fonte!=="CEMADEN"||r.variavel!=="precipitacao_mm"||!passaFiltroData(r.data)||!cu.has(r.estacao_codigo))return;const info=alertas.find(a=>a.tipo==="Cheia"&&a.local===r.estacao_codigo);if(!info||info.uf!==ufAtual)return;const mes=String(r.data).slice(0,7);pmChuva[mes]=(pmChuva[mes]||0)+(parseFloat(r.valor)||0);});
   const meses=Object.keys(pmSeca).filter(m=>pmChuva[m]!==undefined).sort();
   const tc=darkMode?"#dde1ea":"#2c2a25",sc=darkMode?"#8a90a0":"#6b6559",gc=darkMode?"#2a3040":"#e7e1d2";
+  const corChuvaLinha=darkMode?"#7ec8f5":"#16213e";
   if(graficoCorrelacao)graficoCorrelacao.destroy();
   graficoCorrelacao=new Chart(document.getElementById("grafico-correlacao"),{
     type:"line",
     data:{labels:meses,datasets:[
       {label:"Seca (%)",data:meses.map(m=>pmSeca[m]),borderColor:gv("--seca-s2"),backgroundColor:"transparent",tension:.3,yAxisID:"ySeca",pointRadius:3,pointHoverRadius:6},
-      {label:"Chuva (mm)",data:meses.map(m=>Math.round(pmChuva[m])),borderColor:gv("--azul-marinho"),backgroundColor:"transparent",tension:.3,yAxisID:"yChuva",pointRadius:3,pointHoverRadius:6,borderDash:[4,2]}
+      {label:"Chuva (mm)",data:meses.map(m=>Math.round(pmChuva[m])),borderColor:corChuvaLinha,backgroundColor:"transparent",tension:.3,yAxisID:"yChuva",pointRadius:3,pointHoverRadius:6,borderDash:[4,2]}
     ]},
     options:{responsive:true,plugins:{legend:{position:"bottom",labels:{color:tc}},tooltip:{mode:"index",intersect:false}},
-      scales:{ySeca:{type:"linear",position:"left",title:{display:true,text:"Seca (%)",color:gv("--seca-s2")},ticks:{color:sc},grid:{color:gc}},yChuva:{type:"linear",position:"right",title:{display:true,text:"Chuva (mm)",color:gv("--azul-marinho")},ticks:{color:sc},grid:{display:false}},x:{ticks:{color:sc},grid:{color:gc}}}}
+      scales:{ySeca:{type:"linear",position:"left",title:{display:true,text:"Seca (%)",color:gv("--seca-s2")},ticks:{color:sc},grid:{color:gc}},yChuva:{type:"linear",position:"right",title:{display:true,text:"Chuva (mm)",color:corChuvaLinha},ticks:{color:sc},grid:{display:false}},x:{ticks:{color:sc},grid:{color:gc}}}}
   });
 }
 
