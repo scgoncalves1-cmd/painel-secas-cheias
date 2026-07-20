@@ -76,13 +76,10 @@
     padding:6px 18px; font-size:.72rem; letter-spacing:1.5px; text-transform:uppercase;
     margin-bottom:22px; color:#f0ead9;
   }
-  .hero h1{ font-size:2.4rem; margin:0 0 14px; font-weight:800; }
+  .hero h1{ font-size:2.4rem; margin:0 0 22px; font-weight:800; }
   .hero h1 .accent{ color:var(--laranja); }
-  .hero p.subtitulo{
-    max-width:640px; margin:0 auto 26px; color:#e6e2d4; font-size:1rem; line-height:1.5;
-  }
-  .tags-ods{ display:flex; justify-content:center; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom:26px; }
-  .tags-ods img{ height:64px; width:64px; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,.25); }
+  .tags-ods{ display:flex; justify-content:center; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:26px; }
+  .tags-ods img{ height:96px; width:96px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,.25); }
   .rodape-academico{
     display:flex; justify-content:center; gap:22px; flex-wrap:wrap;
     font-size:.78rem; color:#cfd0c2; border-top:1px solid rgba(255,255,255,.18);
@@ -91,15 +88,13 @@
 
   /* ===== Áreas de estudo ===== */
   .secao-areas{ padding:48px 24px 64px; max-width:1100px; margin:0 auto; }
-  .secao-areas h2{ text-align:center; font-size:1.5rem; margin-bottom:6px; }
-  .secao-areas > p{ text-align:center; color:var(--texto-suave); margin-top:0; margin-bottom:34px; }
 
   .cards-estados{ display:grid; grid-template-columns:1fr 1fr; gap:24px; }
   @media (max-width:760px){ .cards-estados{ grid-template-columns:1fr; } }
 
   .card-estado{
     border-radius:18px; padding:28px 24px 22px; color:#fff; cursor:pointer;
-    position:relative; overflow:hidden; min-height:280px;
+    position:relative; overflow:hidden; min-height:300px;
     display:flex; flex-direction:column; justify-content:space-between;
     transition:transform .15s, box-shadow .15s;
     background:linear-gradient(160deg, var(--verde-medio) 0%, var(--marrom-medio) 100%);
@@ -107,7 +102,7 @@
   .card-estado:hover{ transform:translateY(-4px); box-shadow:0 12px 28px rgba(0,0,0,.22); }
 
   .card-estado .forma-svg{
-    align-self:center; margin:6px 0 10px; max-width:170px; max-height:150px; object-fit:contain;
+    align-self:center; margin:6px 0 10px; max-width:220px; max-height:190px; object-fit:contain;
     filter:drop-shadow(0 6px 10px rgba(0,0,0,.35));
   }
   .card-estado .titulo-estado{ font-size:1.05rem; font-weight:700; }
@@ -131,8 +126,14 @@
     border-radius:14px; padding:18px 22px; color:#fff; margin-bottom:22px;
     display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;
   }
-  .banner-seca .rotulo{ font-size:.78rem; text-transform:uppercase; letter-spacing:1px; opacity:.85; }
+  .banner-seca .rotulo{ font-size:.78rem; text-transform:uppercase; letter-spacing:1px; font-weight:800; }
+  .banner-seca .valor-linha{ display:flex; align-items:center; gap:10px; }
+  .banner-seca .valor-linha i{ width:20px; height:20px; border-radius:50%; display:inline-block; flex:none; background:#fff; }
   .banner-seca .valor{ font-size:1.25rem; font-weight:800; }
+  .banner-seca #banner-seca-ref{
+    background:rgba(255,255,255,.28); color:#fff; font-weight:700;
+    padding:12px 18px; border-radius:8px; font-size:.8rem; text-align:center;
+  }
 
   /* ---- faixa de status de CHUVA (distinta da faixa de seca) ---- */
   .banner-chuva{
@@ -166,6 +167,7 @@
   }
   .filtro-segmento:first-child .filtro-btn{ border-radius:10px 0 0 10px; }
   .filtro-segmento:last-child .filtro-btn{ border-radius:0 10px 10px 0; }
+  .filtro-global-azul .filtro-btn{ background:var(--azul-marinho); }
   .filtro-painel{
     display:none; position:absolute; top:100%; left:0; right:0; z-index:30;
     background:#fff; border:1px solid #e7e1d2; border-top:none; border-radius:0 0 10px 10px;
@@ -191,14 +193,14 @@
 
   .sem-dados{ font-size:.85rem; color:var(--texto-suave); font-style:italic; padding:10px 0; }
 
-  /* ---- alternador de agrupamento dos gráficos de chuva: CIDADE | REGIÃO ---- */
-  .modo-toggle{ display:flex; gap:10px; margin-bottom:14px; }
+  /* ---- alternador de agrupamento dos gráficos de chuva: CIDADE | REGIÃO + dropdown local ---- */
+  .modo-toggle{ display:flex; gap:10px; align-items:flex-start; margin-bottom:14px; flex-wrap:wrap; }
   .modo-btn{
-    background:#d9d2c0; color:var(--marrom-escuro); border:none; border-radius:8px;
+    background:#c7cbdb; color:var(--azul-marinho); border:none; border-radius:8px;
     padding:10px 26px; font-size:.8rem; font-weight:800; letter-spacing:.5px;
     text-transform:uppercase; cursor:pointer;
   }
-  .modo-btn.ativo{ background:var(--marrom-escuro); color:#fff; }
+  .modo-btn.ativo{ background:var(--azul-marinho); color:#fff; }
 
   .graficos{ display:grid; grid-template-columns:1fr 1fr; gap:22px; }
   @media (max-width:820px){ .graficos{ grid-template-columns:1fr; } }
@@ -206,6 +208,16 @@
   .grafico-card h3{ margin:0 0 12px; font-size:.95rem; }
   .grafico-card.full{ grid-column:1 / -1; }
   canvas{ max-height:280px; }
+
+  .secao-painel{
+    background:var(--bg-card); border-radius:16px; padding:24px; margin-bottom:26px;
+    box-shadow:0 1px 4px rgba(0,0,0,.05); border:1px solid #e7e1d2;
+  }
+  .secao-painel-titulo{
+    font-size:1.05rem; font-weight:800; margin:0 0 18px; text-transform:uppercase; letter-spacing:.5px;
+  }
+  .secao-seca .secao-painel-titulo{ color:var(--laranja-forte); }
+  .secao-chuva .secao-painel-titulo{ color:var(--azul-marinho); }
 
   .aviso-config{
     max-width:640px; margin:60px auto; background:#fff3cd; border:1px solid #ffe08a;
@@ -219,8 +231,7 @@
 <div class="topbar">
   <div class="marca">PPGCidades</div>
   <div class="nav-pill">
-    <button id="btn-nav-capa" class="ativo">Capa</button>
-    <button id="btn-nav-painel">Painel</button>
+    <button id="btn-nav-capa" class="ativo">Início</button>
   </div>
 </div>
 
@@ -229,10 +240,6 @@
   <div class="hero">
     <div class="badge-pesquisa">Pesquisa de Mestrado · PPGCS · UCS</div>
     <h1>Entre a <span class="accent">Seca</span> e a <span class="accent">Cheia</span></h1>
-    <p class="subtitulo">
-      Uma plataforma integrada de dados para a gestão de desastres climáticos —
-      monitoramento de alertas nos estados do Rio Grande do Sul e São Paulo.
-    </p>
     <div class="tags-ods">
       <img src="ods11.png" alt="ODS 11 - Cidades e Comunidades Sustentáveis">
       <img src="ods13.png" alt="ODS 13 - Ação Contra a Mudança Global do Clima">
@@ -240,15 +247,11 @@
     </div>
     <div class="rodape-academico">
       <span>🎓 PPGCS · UCS</span>
-      <span>🖥 Design Science Research</span>
-      <span>📅 2024–2026</span>
       <span>👤 Stéfani Capriolli Gonçalves</span>
     </div>
   </div>
 
   <div class="secao-areas">
-    <h2>Áreas de Estudo</h2>
-    <p>Dois estados brasileiros monitorados com perfis distintos de eventos climáticos extremos</p>
     <div class="cards-estados">
       <div class="card-estado rs" onclick="abrirPainel('RS')">
         <img class="forma-svg" src="rs.png" alt="Mapa do Rio Grande do Sul">
@@ -285,75 +288,110 @@
 
   <div id="painel-config-aviso"></div>
 
-  <div class="banner-seca" id="banner-seca" style="background:var(--nivel-normal);">
-    <div>
-      <div class="rotulo">Status de seca do estado</div>
-      <div class="valor" id="banner-seca-valor">Carregando...</div>
-    </div>
-    <div class="atualizado" id="banner-seca-ref"></div>
-  </div>
+  <div class="secao-painel secao-seca">
+    <div class="secao-painel-titulo">🏜️ Seca</div>
 
-  <div class="legenda">
-    <span><i style="background:var(--nivel-normal)"></i> Normal</span>
-    <span><i style="background:var(--nivel-perigo)"></i> Chuva (Perigo)</span>
-    <span><i style="background:var(--nivel-grande-perigo)"></i> Chuva forte (Grande perigo)</span>
-    <span><i style="background:var(--nivel-muito-grave)"></i> Temporal (Perigo muito grande)</span>
-  </div>
-
-  <div class="filtro-global">
-    <div class="filtro-segmento" id="seg-ano">
-      <button type="button" class="filtro-btn" onclick="toggleFiltro('ano')">Ano</button>
-      <div class="filtro-painel" id="painel-ano"></div>
+    <div class="banner-seca" id="banner-seca" style="background:var(--nivel-normal);">
+      <div>
+        <div class="rotulo">Status de seca do estado</div>
+        <div class="valor-linha">
+          <i id="banner-seca-dot"></i>
+          <span class="valor" id="banner-seca-valor">Carregando...</span>
+        </div>
+      </div>
+      <div class="atualizado" id="banner-seca-ref"></div>
     </div>
-    <div class="filtro-segmento" id="seg-mes">
-      <button type="button" class="filtro-btn" onclick="toggleFiltro('mes')">Mês</button>
-      <div class="filtro-painel" id="painel-mes"></div>
-    </div>
-    <div class="filtro-segmento filtro-segmento-grande" id="seg-cidade">
-      <button type="button" class="filtro-btn" onclick="toggleFiltro('cidade')">Cidade</button>
-      <div class="filtro-painel" id="painel-cidade"></div>
-    </div>
-    <div class="filtro-segmento filtro-segmento-grande" id="seg-regiao">
-      <button type="button" class="filtro-btn" onclick="toggleFiltro('regiao')">Região</button>
-      <div class="filtro-painel" id="painel-regiao"></div>
-    </div>
-  </div>
 
-  <div id="bullet-cidade"></div>
-
-  <div class="graficos">
-    <div class="grafico-card full">
-      <h3>📉 Seca por categoria (% da área do estado, mês a mês)</h3>
-      <canvas id="grafico-seca"></canvas>
+    <div class="legenda">
+      <span><i style="background:var(--seca-sem)"></i> Sem seca</span>
+      <span><i style="background:var(--seca-s0)"></i> Seca incipiente (S0)</span>
+      <span><i style="background:var(--seca-s2)"></i> Seca moderada (S2)</span>
+      <span><i style="background:var(--seca-s4)"></i> Seca severa (S4)</span>
     </div>
-  </div>
 
-  <div style="height:22px"></div>
-
-  <div class="banner-chuva" id="banner-chuva" style="background:var(--azul-marinho);">
-    <div>
-      <div class="rotulo">Status de chuvas por estado</div>
-      <div class="valor-linha">
-        <i id="banner-chuva-dot" style="background:var(--nivel-normal);"></i>
-        <span id="banner-chuva-valor">Carregando...</span>
+    <div class="filtro-global filtro-global-laranja">
+      <div class="filtro-segmento" id="seg-ano">
+        <button type="button" class="filtro-btn" onclick="toggleFiltro('ano')">Ano</button>
+        <div class="filtro-painel" id="painel-ano"></div>
+      </div>
+      <div class="filtro-segmento" id="seg-mes">
+        <button type="button" class="filtro-btn" onclick="toggleFiltro('mes')">Mês</button>
+        <div class="filtro-painel" id="painel-mes"></div>
+      </div>
+      <div class="filtro-segmento filtro-segmento-grande" id="seg-cidade">
+        <button type="button" class="filtro-btn" onclick="toggleFiltro('cidade')">Cidade</button>
+        <div class="filtro-painel" id="painel-cidade"></div>
+      </div>
+      <div class="filtro-segmento filtro-segmento-grande" id="seg-regiao">
+        <button type="button" class="filtro-btn" onclick="toggleFiltro('regiao')">Região</button>
+        <div class="filtro-painel" id="painel-regiao"></div>
       </div>
     </div>
-    <div class="badge-ref" id="banner-chuva-ref"></div>
-  </div>
 
-  <div class="modo-toggle">
-    <button type="button" class="modo-btn" id="btn-modo-cidade" onclick="definirModoChuva('cidade')">Cidade</button>
-    <button type="button" class="modo-btn" id="btn-modo-regiao" onclick="definirModoChuva('regiao')">Região</button>
-  </div>
+    <div id="bullet-cidade"></div>
 
-  <div class="graficos">
-    <div class="grafico-card">
-      <h3 id="titulo-grafico-cidades">🌧️ Chuva acumulada por cidade (CEMADEN)</h3>
-      <canvas id="grafico-chuva-cidades"></canvas>
+    <div class="graficos">
+      <div class="grafico-card full">
+        <h3>📉 Seca por categoria (% da área do estado, mês a mês)</h3>
+        <canvas id="grafico-seca"></canvas>
+      </div>
     </div>
-    <div class="grafico-card">
-      <h3 id="titulo-grafico-serie">📈 Chuva diária</h3>
-      <canvas id="grafico-chuva-serie"></canvas>
+  </div>
+
+  <div class="secao-painel secao-chuva">
+    <div class="secao-painel-titulo">🌧️ Chuva</div>
+
+    <div class="banner-chuva" id="banner-chuva" style="background:var(--azul-marinho);">
+      <div>
+        <div class="rotulo">Status de chuvas por estado</div>
+        <div class="valor-linha">
+          <i id="banner-chuva-dot" style="background:var(--nivel-normal);"></i>
+          <span id="banner-chuva-valor">Carregando...</span>
+        </div>
+      </div>
+      <div class="badge-ref" id="banner-chuva-ref"></div>
+    </div>
+
+    <div class="legenda">
+      <span><i style="background:var(--nivel-normal)"></i> Normal</span>
+      <span><i style="background:var(--nivel-perigo)"></i> Chuva (Perigo)</span>
+      <span><i style="background:var(--nivel-grande-perigo)"></i> Chuva forte (Grande perigo)</span>
+      <span><i style="background:var(--nivel-muito-grave)"></i> Temporal (Perigo muito grande)</span>
+    </div>
+
+    <div class="filtro-global filtro-global-azul">
+      <div class="filtro-segmento" id="seg-ano-chuva">
+        <button type="button" class="filtro-btn" onclick="toggleFiltroChuva('ano')">Ano</button>
+        <div class="filtro-painel" id="painel-ano-chuva"></div>
+      </div>
+      <div class="filtro-segmento" id="seg-mes-chuva">
+        <button type="button" class="filtro-btn" onclick="toggleFiltroChuva('mes')">Mês</button>
+        <div class="filtro-painel" id="painel-mes-chuva"></div>
+      </div>
+      <div class="filtro-segmento filtro-segmento-grande" id="seg-cidade-chuva">
+        <button type="button" class="filtro-btn" onclick="toggleFiltroChuva('cidade')">Cidade</button>
+        <div class="filtro-painel" id="painel-cidade-chuva"></div>
+      </div>
+      <div class="filtro-segmento filtro-segmento-grande" id="seg-regiao-chuva">
+        <button type="button" class="filtro-btn" onclick="toggleFiltroChuva('regiao')">Região</button>
+        <div class="filtro-painel" id="painel-regiao-chuva"></div>
+      </div>
+    </div>
+
+    <div class="modo-toggle">
+      <button type="button" class="modo-btn" id="btn-modo-cidade" onclick="definirModoChuva('cidade')">Cidade</button>
+      <button type="button" class="modo-btn" id="btn-modo-regiao" onclick="definirModoChuva('regiao')">Região</button>
+    </div>
+
+    <div class="graficos">
+      <div class="grafico-card">
+        <h3 id="titulo-grafico-cidades">🌧️ Chuva acumulada por cidade (CEMADEN)</h3>
+        <canvas id="grafico-chuva-cidades"></canvas>
+      </div>
+      <div class="grafico-card">
+        <h3 id="titulo-grafico-serie">📈 Chuva diária</h3>
+        <canvas id="grafico-chuva-serie"></canvas>
+      </div>
     </div>
   </div>
 </div>
@@ -419,6 +457,7 @@ let mesesFiltro = { todos: true, selecionados: new Set() };
 let cidadeFiltro = { todos: true, cidade: null };
 let regiaoFiltro = { todos: true, regiao: null };
 let painelFiltroAberto = null; // 'ano' | 'mes' | 'cidade' | 'regiao' | null
+let painelFiltroAbertoChuva = null; // idem, pra barra azul da seção de chuva
 let modoAgrupamentoChuva = "cidade"; // 'cidade' | 'regiao'
 
 const NOMES_MESES = ["01","02","03","04","05","06","07","08","09","10","11","12"];
@@ -458,7 +497,6 @@ function mostrarCapa() {
   document.getElementById("view-capa").style.display = "block";
   document.getElementById("view-painel").classList.remove("ativo");
   document.getElementById("btn-nav-capa").classList.add("ativo");
-  document.getElementById("btn-nav-painel").classList.remove("ativo");
   location.hash = "";
 }
 
@@ -469,11 +507,11 @@ function abrirPainel(uf) {
   cidadeFiltro = { todos: true, cidade: null };
   regiaoFiltro = { todos: true, regiao: null };
   painelFiltroAberto = null;
+  painelFiltroAbertoChuva = null;
   modoAgrupamentoChuva = "cidade";
   document.getElementById("view-capa").style.display = "none";
   document.getElementById("view-painel").classList.add("ativo");
   document.getElementById("btn-nav-capa").classList.remove("ativo");
-  document.getElementById("btn-nav-painel").classList.add("ativo");
   document.getElementById("painel-titulo").textContent =
     "Painel — " + (uf === "RS" ? "Rio Grande do Sul" : "São Paulo");
   location.hash = "painel/" + uf;
@@ -481,12 +519,10 @@ function abrirPainel(uf) {
 }
 
 document.getElementById("btn-nav-capa").addEventListener("click", mostrarCapa);
-document.getElementById("btn-nav-painel").addEventListener("click", function () {
-  abrirPainel(ufAtual || "RS");
-});
 
 document.addEventListener("click", function (e) {
-  if (!e.target.closest(".filtro-global")) fecharFiltros();
+  if (!e.target.closest(".filtro-global-laranja")) fecharFiltros();
+  if (!e.target.closest(".filtro-global-azul")) fecharFiltrosChuva();
 });
 
 /* ---------- carregamento de dados ---------- */
@@ -559,6 +595,22 @@ function atualizarPaineisFiltro() {
   document.getElementById("painel-regiao").classList.toggle("aberto", painelFiltroAberto === "regiao");
 }
 
+/* ---------- barra azul de filtros (Ano/Mês/Cidade/Região) na seção de chuva — mesmo estado, outra barra ---------- */
+function toggleFiltroChuva(nome) {
+  painelFiltroAbertoChuva = painelFiltroAbertoChuva === nome ? null : nome;
+  atualizarPaineisFiltroChuva();
+}
+function fecharFiltrosChuva() {
+  painelFiltroAbertoChuva = null;
+  atualizarPaineisFiltroChuva();
+}
+function atualizarPaineisFiltroChuva() {
+  document.getElementById("painel-ano-chuva").classList.toggle("aberto", painelFiltroAbertoChuva === "ano");
+  document.getElementById("painel-mes-chuva").classList.toggle("aberto", painelFiltroAbertoChuva === "mes");
+  document.getElementById("painel-cidade-chuva").classList.toggle("aberto", painelFiltroAbertoChuva === "cidade");
+  document.getElementById("painel-regiao-chuva").classList.toggle("aberto", painelFiltroAbertoChuva === "regiao");
+}
+
 /* ---------- listas disponíveis pros filtros ---------- */
 function cidadesDisponiveis() {
   return alertas.filter(a => a.tipo === "Cheia" && a.uf === ufAtual)
@@ -588,12 +640,15 @@ function anosDisponiveis() {
 /* ---------- painel ANO (multi-seleção + Todos) ---------- */
 function renderizarPainelAno() {
   const anos = anosDisponiveis();
-  const painel = document.getElementById("painel-ano");
   let html = '<div class="filtro-item todos" onclick="marcarAnoTodos()">' +
     (anosFiltro.todos ? "☑" : "☐") + ' Todos</div>';
   html += anos.map(a => '<div class="filtro-item" onclick="toggleAno(\'' + a + '\')">' +
     ((!anosFiltro.todos && anosFiltro.selecionados.has(a)) ? "☑" : "☐") + ' ' + a + '</div>').join("");
-  painel.innerHTML = html || '<div class="filtro-item">Sem dados ainda</div>';
+  const conteudo = html || '<div class="filtro-item">Sem dados ainda</div>';
+  ["painel-ano", "painel-ano-chuva"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = conteudo;
+  });
 }
 function marcarAnoTodos() {
   anosFiltro.todos = true; anosFiltro.selecionados.clear();
@@ -609,12 +664,14 @@ function toggleAno(ano) {
 
 /* ---------- painel MÊS (multi-seleção + Todos) ---------- */
 function renderizarPainelMes() {
-  const painel = document.getElementById("painel-mes");
   let html = '<div class="filtro-item todos" onclick="marcarMesTodos()">' +
     (mesesFiltro.todos ? "☑" : "☐") + ' Todos</div>';
   html += NOMES_MESES.map(m => '<div class="filtro-item" onclick="toggleMes(\'' + m + '\')">' +
     ((!mesesFiltro.todos && mesesFiltro.selecionados.has(m)) ? "☑" : "☐") + ' ' + LABELS_MESES[m] + '</div>').join("");
-  painel.innerHTML = html;
+  ["painel-mes", "painel-mes-chuva"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  });
 }
 function marcarMesTodos() {
   mesesFiltro.todos = true; mesesFiltro.selecionados.clear();
@@ -631,12 +688,15 @@ function toggleMes(mes) {
 /* ---------- painel CIDADE (seleção única + Todos) ---------- */
 function renderizarPainelCidade() {
   const cidades = cidadesDisponiveis();
-  const painel = document.getElementById("painel-cidade");
   let html = '<div class="filtro-item todos" onclick="marcarCidadeTodos()">' +
     (cidadeFiltro.todos ? "●" : "○") + ' Todos</div>';
   html += cidades.map(c => '<div class="filtro-item" onclick="selecionarCidadeFiltro(\'' + c.replace(/'/g, "\\'") + '\')">' +
     ((!cidadeFiltro.todos && cidadeFiltro.cidade === c) ? "●" : "○") + ' ' + c + '</div>').join("");
-  painel.innerHTML = html || '<div class="filtro-item">Sem cidades ainda</div>';
+  const conteudo = html || '<div class="filtro-item">Sem cidades ainda</div>';
+  ["painel-cidade", "painel-cidade-chuva"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = conteudo;
+  });
 }
 function marcarCidadeTodos() {
   cidadeFiltro.todos = true; cidadeFiltro.cidade = null;
@@ -650,12 +710,15 @@ function selecionarCidadeFiltro(cidade) {
 /* ---------- painel REGIÃO (seleção única + Todos) ---------- */
 function renderizarPainelRegiao() {
   const regioes = regioesDisponiveis();
-  const painel = document.getElementById("painel-regiao");
   let html = '<div class="filtro-item todos" onclick="marcarRegiaoTodos()">' +
     (regiaoFiltro.todos ? "●" : "○") + ' Todos</div>';
   html += regioes.map(r => '<div class="filtro-item" onclick="selecionarRegiaoFiltro(\'' + r.replace(/'/g, "\\'") + '\')">' +
     ((!regiaoFiltro.todos && regiaoFiltro.regiao === r) ? "●" : "○") + ' ' + r + '</div>').join("");
-  painel.innerHTML = html || '<div class="filtro-item">Sem regiões ainda — preencha as abas "regiões RS"/"regiões SP" na planilha.</div>';
+  const conteudo = html || '<div class="filtro-item">Sem regiões ainda — preencha as abas "regiões RS"/"regiões SP" na planilha.</div>';
+  ["painel-regiao", "painel-regiao-chuva"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = conteudo;
+  });
 }
 function marcarRegiaoTodos() {
   regiaoFiltro.todos = true; regiaoFiltro.regiao = null;
@@ -750,6 +813,51 @@ function renderizarGraficoSeca() {
   });
 }
 
+/* ---------- faixa de status de chuva (por cidade ou por região, conforme o alternador) ---------- */
+function rankNivelChuva(nivel) {
+  if (!nivel) return 0;
+  if (nivel.indexOf("muito grande") !== -1) return 3;
+  if (nivel.indexOf("Grande perigo") !== -1) return 2;
+  if (nivel.indexOf("Perigo") !== -1) return 1;
+  return 0;
+}
+
+function renderizarBannerChuva(grupoAlvo) {
+  const dot = document.getElementById("banner-chuva-dot");
+  const valor = document.getElementById("banner-chuva-valor");
+  const ref = document.getElementById("banner-chuva-ref");
+  if (!grupoAlvo) {
+    dot.style.background = getVar("--nivel-normal");
+    valor.textContent = "Sem dados ainda";
+    ref.textContent = "";
+    return;
+  }
+
+  const linhasCheia = alertas.filter(a => a.tipo === "Cheia" && a.uf === ufAtual);
+  let piorLinha = null;
+
+  if (modoAgrupamentoChuva === "regiao") {
+    linhasCheia.forEach(l => {
+      if ((l.regiao || "") !== grupoAlvo) return;
+      if (!piorLinha || rankNivelChuva(l.nivel) > rankNivelChuva(piorLinha.nivel)) piorLinha = l;
+    });
+  } else {
+    piorLinha = linhasCheia.find(l => l.local === grupoAlvo) || null;
+  }
+
+  if (!piorLinha) {
+    dot.style.background = getVar("--nivel-normal");
+    valor.textContent = "Sem dados de chuva pra " + grupoAlvo;
+    ref.textContent = "";
+    return;
+  }
+
+  const cor = corNivelCheia(piorLinha.nivel);
+  dot.style.background = cor;
+  valor.textContent = piorLinha.nivel + " — " + grupoAlvo;
+  ref.textContent = (piorLinha.referencia || "") + " · atualizado " + (piorLinha.atualizado_em || "");
+}
+
 /* ---------- gráficos de chuva: agrupa por cidade OU por região, conforme o alternador ---------- */
 function renderizarGraficosChuva() {
   const registros = [];
@@ -835,52 +943,6 @@ function renderizarGraficosChuva() {
     },
     options: { responsive: true, plugins: { legend: { display: false } } },
   });
-}
-
-/* ---------- faixa de status de chuva (por cidade ou por região, conforme o alternador) ---------- */
-function rankNivelChuva(nivel) {
-  if (!nivel) return 0;
-  if (nivel.indexOf("muito grande") !== -1) return 3;
-  if (nivel.indexOf("Grande perigo") !== -1) return 2;
-  if (nivel.indexOf("Perigo") !== -1) return 1;
-  return 0;
-}
-
-function renderizarBannerChuva(grupoAlvo) {
-  const dot = document.getElementById("banner-chuva-dot");
-  const valor = document.getElementById("banner-chuva-valor");
-  const ref = document.getElementById("banner-chuva-ref");
-  if (!grupoAlvo) {
-    dot.style.background = getVar("--nivel-normal");
-    valor.textContent = "Sem dados ainda";
-    ref.textContent = "";
-    return;
-  }
-
-  const linhasCheia = alertas.filter(a => a.tipo === "Cheia" && a.uf === ufAtual);
-  let piorLinha = null;
-
-  if (modoAgrupamentoChuva === "regiao") {
-    // pega, dentre as cidades da região, a que estiver com o nível mais grave
-    linhasCheia.forEach(l => {
-      if ((l.regiao || "") !== grupoAlvo) return;
-      if (!piorLinha || rankNivelChuva(l.nivel) > rankNivelChuva(piorLinha.nivel)) piorLinha = l;
-    });
-  } else {
-    piorLinha = linhasCheia.find(l => l.local === grupoAlvo) || null;
-  }
-
-  if (!piorLinha) {
-    dot.style.background = getVar("--nivel-normal");
-    valor.textContent = "Sem dados de chuva pra " + grupoAlvo;
-    ref.textContent = "";
-    return;
-  }
-
-  const cor = corNivelCheia(piorLinha.nivel);
-  dot.style.background = cor;
-  valor.textContent = piorLinha.nivel + " — " + grupoAlvo;
-  ref.textContent = (piorLinha.referencia || "") + " · atualizado " + (piorLinha.atualizado_em || "");
 }
 
 /* ---------- inicialização ---------- */
